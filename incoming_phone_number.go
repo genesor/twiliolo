@@ -41,10 +41,10 @@ type IncomingPhoneNumber struct {
 }
 
 // GetIncomingPhoneNumber performs a call to the twilio API to retrieve an Incoming Phone Number with its Sid
-func GetIncomingPhoneNumber(client Client, sid string) (*IncomingPhoneNumber, error) {
+func GetIncomingPhoneNumber(client Client, sid string, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
 	var incomingPhoneNumber *IncomingPhoneNumber
 
-	res, err := client.get(url.Values{}, "/IncomingPhoneNumbers/"+sid+".json")
+	res, err := client.get(url.Values{}, "/IncomingPhoneNumbers/"+sid+".json", requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func GetIncomingPhoneNumber(client Client, sid string) (*IncomingPhoneNumber, er
 }
 
 // UpdateIncomingPhoneNumber performs the update of the differents attributes of an Incoming Phone Number
-func UpdateIncomingPhoneNumber(client Client, incomingPhoneNumber *IncomingPhoneNumber) error {
+func UpdateIncomingPhoneNumber(client Client, incomingPhoneNumber *IncomingPhoneNumber, requestOptions ...RequestOption) error {
 	if incomingPhoneNumber == nil || incomingPhoneNumber.Sid == "" {
 		return ErrIncomingPhoneMissingData
 	}
@@ -78,7 +78,7 @@ func UpdateIncomingPhoneNumber(client Client, incomingPhoneNumber *IncomingPhone
 	updates.Set("SmsFallbackMethod", incomingPhoneNumber.SmsFallbackMethod)
 	updates.Set("AccountSid", incomingPhoneNumber.AccountSid)
 
-	body, err := client.post(updates, "/IncomingPhoneNumbers/"+incomingPhoneNumber.Sid+".json")
+	body, err := client.post(updates, "/IncomingPhoneNumbers/"+incomingPhoneNumber.Sid+".json", requestOptions)
 	if err != nil {
 		return err
 	}

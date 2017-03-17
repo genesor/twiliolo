@@ -44,7 +44,7 @@ func TestUpdatePhoneNumber(t *testing.T) {
 		phoneNumber.FriendlyName = "New Friendly Name"
 
 		client := new(MockClient)
-		client.postFn = func(params url.Values, uri string) ([]byte, error) {
+		client.postFn = func(params url.Values, uri string, _ []RequestOption) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 			assert.Equal(t, "New Friendly Name", params.Get("FriendlyName"))
 
@@ -101,7 +101,7 @@ func TestUpdatePhoneNumber(t *testing.T) {
 
 	t.Run("NOK - Error on API call", func(t *testing.T) {
 		client := new(MockClient)
-		client.postFn = func(params url.Values, uri string) ([]byte, error) {
+		client.postFn = func(params url.Values, uri string, _ []RequestOption) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 
 			return nil, errors.New("Error in API")
@@ -117,7 +117,7 @@ func TestUpdatePhoneNumber(t *testing.T) {
 func TestGetIncomingPhoneNumber(t *testing.T) {
 	client := new(MockClient)
 
-	client.getFn = func(params url.Values, uri string) ([]byte, error) {
+	client.getFn = func(params url.Values, uri string, _ []RequestOption) ([]byte, error) {
 		assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 
 		response := fmt.Sprintf(`

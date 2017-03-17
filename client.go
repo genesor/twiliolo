@@ -20,8 +20,8 @@ type Client interface {
 	AccountSid() string
 	AuthToken() string
 	RootURL() string
-	get(url.Values, string) ([]byte, error)
-	post(url.Values, string) ([]byte, error)
+	get(url.Values, string, []RequestOption) ([]byte, error)
+	post(url.Values, string, []RequestOption) ([]byte, error)
 	delete(string) error
 }
 
@@ -40,7 +40,7 @@ func NewClient(accountSid, authToken string) *TwilioClient {
 	return &TwilioClient{accountSid, authToken, rootURL}
 }
 
-func (c *TwilioClient) post(values url.Values, uri string) ([]byte, error) {
+func (c *TwilioClient) post(values url.Values, uri string, requestOptions []RequestOption) ([]byte, error) {
 	req, err := http.NewRequest("POST", c.buildURI(uri), strings.NewReader(values.Encode()))
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (c *TwilioClient) post(values url.Values, uri string) ([]byte, error) {
 	return body, err
 }
 
-func (c *TwilioClient) get(queryParams url.Values, uri string) ([]byte, error) {
+func (c *TwilioClient) get(queryParams url.Values, uri string, requestOptions []RequestOption) ([]byte, error) {
 	var params *strings.Reader
 
 	if queryParams == nil {
