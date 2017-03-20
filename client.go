@@ -117,7 +117,11 @@ func (c *TwilioClient) Get(uri string, requestOptions []RequestOption) ([]byte, 
 			return body, ErrTwilioServer
 		}
 		twilioError := new(TwilioError)
-		json.Unmarshal(body, twilioError)
+		err := json.Unmarshal(body, &twilioError)
+		if err != nil {
+			return body, err
+		}
+
 		return body, twilioError
 
 	}

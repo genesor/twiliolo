@@ -1,5 +1,7 @@
 package twiliolo
 
+import "strconv"
+
 type RequestOption interface {
 	GetValue() (string, string)
 }
@@ -7,11 +9,11 @@ type RequestOption interface {
 type Page int
 
 func (p Page) GetValue() (string, string) {
-	return "Page", string(p)
+	return "Page", strconv.Itoa(int(p))
 }
 
 type PageSize int
 
 func (p PageSize) GetValue() (string, string) {
-	return "PageSize", string(p)
+	return "PageSize", strconv.Itoa(int(p))
 }
