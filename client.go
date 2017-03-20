@@ -46,6 +46,13 @@ func (c *TwilioClient) post(values url.Values, uri string, requestOptions []Requ
 		return nil, err
 	}
 
+	q := req.URL.Query()
+	for _, option := range requestOptions {
+		key, value := option.GetValue()
+		q.Add(key, value)
+	}
+	req.URL.RawQuery = q.Encode()
+
 	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	httpClient := &http.Client{}
@@ -77,17 +84,21 @@ func (c *TwilioClient) post(values url.Values, uri string, requestOptions []Requ
 }
 
 func (c *TwilioClient) get(queryParams url.Values, uri string, requestOptions []RequestOption) ([]byte, error) {
-	var params *strings.Reader
-
 	if queryParams == nil {
 		queryParams = url.Values{}
 	}
 
-	params = strings.NewReader(queryParams.Encode())
-	req, err := http.NewRequest("GET", c.buildURI(uri), params)
+	req, err := http.NewRequest("GET", c.buildURI(uri), strings.NewReader(queryParams.Encode()))
 	if err != nil {
 		return nil, err
 	}
+
+	q := req.URL.Query()
+	for _, option := range requestOptions {
+		key, value := option.GetValue()
+		q.Add(key, value)
+	}
+	req.URL.RawQuery = q.Encode()
 
 	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
 	httpClient := &http.Client{}
