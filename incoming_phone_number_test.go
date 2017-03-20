@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	dateCreated = time.Now().Add(-5 * time.Hour)
-	dateUpdated = time.Now().Add(-2 * time.Hour)
+	dateCreated = time.Now().Add(-48 * time.Hour)
+	dateUpdated = time.Now().Add(-24 * time.Hour)
 	testNumber  = IncomingPhoneNumber{
 		Sid:                  "TwiliololIncomingFake",
 		AccountSid:           "TwilioloFake",
@@ -42,12 +42,12 @@ func TestUpdatePhoneNumber(t *testing.T) {
 	t.Run("OK - Success update", func(t *testing.T) {
 		phoneNumber := testNumber
 		phoneNumber.FriendlyName = "New Friendly Name"
+		newUpdated := time.Now().Format(time.RFC1123Z)
 
 		client := new(MockClient)
 		client.postFn = func(params url.Values, uri string, _ []RequestOption) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 			assert.Equal(t, "New Friendly Name", params.Get("FriendlyName"))
-
 			response := fmt.Sprintf(`
 			{
 				"sid": "TwiliololIncomingFake",
@@ -77,14 +77,14 @@ func TestUpdatePhoneNumber(t *testing.T) {
 				"beta": false,
 				"api_version": "2010-04-01",
 				"uri": "\/2010-04-01\/Accounts\/TwilioloFake\/IncomingPhoneNumbers\/TwiliololIncomingFake.json"
-			}`, dateCreated.Format(time.RFC1123Z), time.Now().Format(time.RFC1123Z))
+			}`, dateCreated.Format(time.RFC1123Z), newUpdated)
 
 			return []byte(response), nil
 		}
 
 		err := UpdateIncomingPhoneNumber(client, &phoneNumber)
 		assert.NoError(t, err)
-		assert.True(t, phoneNumber.DateUpdated > testNumber.DateUpdated)
+		assert.Equal(t, newUpdated, phoneNumber.DateUpdated)
 	})
 
 	t.Run("NOK - Missing ID", func(t *testing.T) {
