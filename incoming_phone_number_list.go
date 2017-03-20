@@ -19,7 +19,7 @@ type IncomingPhoneNumberList struct {
 
 // GetIncomingPhoneNumberList retrieves the first page of all the Incoming Phone Number owned
 func GetIncomingPhoneNumberList(client Client, requestOptions ...RequestOption) (*IncomingPhoneNumberList, error) {
-	body, err := client.get(url.Values{}, "/IncomingPhoneNumbers.json", requestOptions)
+	body, err := client.Get("/IncomingPhoneNumbers.json", requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func GetNextPageIncomingPhoneNumberList(client Client, previousList *IncomingPho
 	params.Set("Page", strconv.Itoa(previousList.Page+1))
 	params.Set("PageSize", strconv.Itoa(previousList.PageSize))
 
-	body, err := client.get(params, "/IncomingPhoneNumbers.json", requestOptions)
+	body, err := client.Get("/IncomingPhoneNumbers.json", requestOptions)
 
 	if err != nil {
 		return nil, err

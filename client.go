@@ -2,6 +2,7 @@ package twiliolo
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -20,9 +21,14 @@ type Client interface {
 	AccountSid() string
 	AuthToken() string
 	RootURL() string
-	get(url.Values, string, []RequestOption) ([]byte, error)
-	post(url.Values, string, []RequestOption) ([]byte, error)
-	delete(string) error
+	Get(string, []RequestOption) ([]byte, error)
+	Post(string, []RequestOption, url.Values) ([]byte, error)
+	Delete(string, []RequestOption) error
+}
+
+// HTTPClient is the interface of an HTTP client making a request
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
 }
 
 // TwilioClient is the Twilio API client
@@ -30,34 +36,32 @@ type TwilioClient struct {
 	accountSid string
 	authToken  string
 	rootURL    string
+	httpClient HTTPClient
 }
 
 var _ Client = &TwilioClient{}
 
 // NewClient instanciates a new TwilioClient
-func NewClient(accountSid, authToken string) *TwilioClient {
+func NewClient(accountSid, authToken string, httpClient HTTPClient) *TwilioClient {
 	rootURL := ROOT + "/" + VERSION + "/Accounts/" + accountSid
-	return &TwilioClient{accountSid, authToken, rootURL}
+	return &TwilioClient{accountSid, authToken, rootURL, httpClient}
 }
 
-func (c *TwilioClient) post(values url.Values, uri string, requestOptions []RequestOption) ([]byte, error) {
-	req, err := http.NewRequest("POST", c.buildURI(uri), strings.NewReader(values.Encode()))
+func (c *TwilioClient) Post(uri string, requestOptions []RequestOption, values url.Values) ([]byte, error) {
+	uri, err := c.buildURI(uri, requestOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	q := req.URL.Query()
-	for _, option := range requestOptions {
-		key, value := option.GetValue()
-		q.Add(key, value)
+	req, err := http.NewRequest("POST", uri, strings.NewReader(values.Encode()))
+	if err != nil {
+		return nil, err
 	}
-	req.URL.RawQuery = q.Encode()
 
 	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	httpClient := &http.Client{}
 
-	res, err := httpClient.Do(req)
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -83,27 +87,20 @@ func (c *TwilioClient) post(values url.Values, uri string, requestOptions []Requ
 	return body, err
 }
 
-func (c *TwilioClient) get(queryParams url.Values, uri string, requestOptions []RequestOption) ([]byte, error) {
-	if queryParams == nil {
-		queryParams = url.Values{}
-	}
-
-	req, err := http.NewRequest("GET", c.buildURI(uri), strings.NewReader(queryParams.Encode()))
+func (c *TwilioClient) Get(uri string, requestOptions []RequestOption) ([]byte, error) {
+	uri, err := c.buildURI(uri, requestOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	q := req.URL.Query()
-	for _, option := range requestOptions {
-		key, value := option.GetValue()
-		q.Add(key, value)
+	req, err := http.NewRequest("GET", uri, nil)
+	if err != nil {
+		return nil, err
 	}
-	req.URL.RawQuery = q.Encode()
 
 	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
-	httpClient := &http.Client{}
 
-	res, err := httpClient.Do(req)
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -128,16 +125,20 @@ func (c *TwilioClient) get(queryParams url.Values, uri string, requestOptions []
 	return body, err
 }
 
-func (c *TwilioClient) delete(uri string) error {
-	req, err := http.NewRequest("DELETE", c.buildURI(uri), nil)
+func (c *TwilioClient) Delete(uri string, requestOptions []RequestOption) error {
+	uri, err := c.buildURI(uri, requestOptions)
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("DELETE", uri, nil)
 	if err != nil {
 		return err
 	}
 
 	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
-	httpClient := &http.Client{}
 
-	res, err := httpClient.Do(req)
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return err
 	}
@@ -166,22 +167,32 @@ func (c *TwilioClient) RootURL() string {
 	return c.rootURL
 }
 
-func (c *TwilioClient) buildURI(parts ...string) string {
-	if len(parts) == 0 {
-		return ""
+func (c *TwilioClient) buildURI(uri string, requestOptions []RequestOption) (string, error) {
+	uri = strings.Trim(uri, "/")
+	if uri == "" {
+		return "", errors.New("Empty URI")
 	}
 
-	newParts := make([]string, 0, len(parts))
+	parts := make([]string, 0)
+
 	// Check for "http" because sometimes we get raw URLs from following the metadata.
-	if !strings.HasPrefix(parts[0], "http") {
-		newParts = append(newParts, c.RootURL())
+	if !strings.HasPrefix(uri, "http") {
+		parts = append(parts, c.RootURL())
 	}
-	for _, p := range parts {
-		p = strings.Trim(p, "/")
-		if p == "" {
-			continue
-		}
-		newParts = append(newParts, p)
+
+	parts = append(parts, uri)
+
+	u, err := url.Parse(strings.Join(parts, "/"))
+	if err != nil {
+		return "", err
 	}
-	return strings.Join(newParts, "/")
+
+	q := u.Query()
+	for _, option := range requestOptions {
+		key, value := option.GetValue()
+		q.Add(key, value)
+	}
+	u.RawQuery = q.Encode()
+
+	return u.String(), nil
 }

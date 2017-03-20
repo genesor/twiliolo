@@ -1,4 +1,4 @@
-package twiliolo
+package twiliolo_test
 
 import (
 	"errors"
@@ -7,13 +7,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Genesor/twiliolo"
+	"github.com/Genesor/twiliolo/internal"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
 	dateCreated = time.Now().Add(-48 * time.Hour)
 	dateUpdated = time.Now().Add(-24 * time.Hour)
-	testNumber  = IncomingPhoneNumber{
+	testNumber  = twiliolo.IncomingPhoneNumber{
 		Sid:                  "TwiliololIncomingFake",
 		AccountSid:           "TwilioloFake",
 		FriendlyName:         "Twiliolo Test Number",
@@ -32,8 +34,8 @@ var (
 		SmsFallbackMethod:    "GET",
 		DateCreated:          dateCreated.Format(time.RFC1123Z),
 		DateUpdated:          dateUpdated.Format(time.RFC1123Z),
-		Capabilities:         Capabilites{MMS: false, SMS: false, Voice: true},
-		APIVersion:           VERSION,
+		Capabilities:         twiliolo.Capabilites{MMS: false, SMS: false, Voice: true},
+		APIVersion:           twiliolo.VERSION,
 		URI:                  "/2010-04-01/Accounts/TwilioloFake/IncomingPhoneNumbers/TwiliololIncomingFake.json",
 	}
 )
@@ -44,8 +46,8 @@ func TestUpdatePhoneNumber(t *testing.T) {
 		phoneNumber.FriendlyName = "New Friendly Name"
 		newUpdated := time.Now().Format(time.RFC1123Z)
 
-		client := new(MockClient)
-		client.postFn = func(params url.Values, uri string, _ []RequestOption) ([]byte, error) {
+		client := new(internal.MockClient)
+		client.PostFn = func(uri string, _ []twiliolo.RequestOption, params url.Values) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 			assert.Equal(t, "New Friendly Name", params.Get("FriendlyName"))
 			response := fmt.Sprintf(`
@@ -82,32 +84,32 @@ func TestUpdatePhoneNumber(t *testing.T) {
 			return []byte(response), nil
 		}
 
-		err := UpdateIncomingPhoneNumber(client, &phoneNumber)
+		err := twiliolo.UpdateIncomingPhoneNumber(client, &phoneNumber)
 		assert.NoError(t, err)
 		assert.Equal(t, newUpdated, phoneNumber.DateUpdated)
 	})
 
 	t.Run("NOK - Missing ID", func(t *testing.T) {
-		phoneNumber := IncomingPhoneNumber{
+		phoneNumber := twiliolo.IncomingPhoneNumber{
 			FriendlyName: "I am invalid",
 		}
 
-		client := new(MockClient)
-		err := UpdateIncomingPhoneNumber(client, &phoneNumber)
+		client := new(internal.MockClient)
+		err := twiliolo.UpdateIncomingPhoneNumber(client, &phoneNumber)
 
 		assert.Error(t, err)
-		assert.Equal(t, ErrIncomingPhoneMissingData, err)
+		assert.Equal(t, twiliolo.ErrIncomingPhoneMissingData, err)
 	})
 
 	t.Run("NOK - Error on API call", func(t *testing.T) {
-		client := new(MockClient)
-		client.postFn = func(params url.Values, uri string, _ []RequestOption) ([]byte, error) {
+		client := new(internal.MockClient)
+		client.PostFn = func(uri string, _ []twiliolo.RequestOption, params url.Values) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 
 			return nil, errors.New("Error in API")
 		}
 
-		err := UpdateIncomingPhoneNumber(client, &testNumber)
+		err := twiliolo.UpdateIncomingPhoneNumber(client, &testNumber)
 
 		assert.Error(t, err)
 		assert.EqualError(t, err, "Error in API")
@@ -115,9 +117,8 @@ func TestUpdatePhoneNumber(t *testing.T) {
 }
 
 func TestGetIncomingPhoneNumber(t *testing.T) {
-	client := new(MockClient)
-
-	client.getFn = func(params url.Values, uri string, _ []RequestOption) ([]byte, error) {
+	client := new(internal.MockClient)
+	client.GetFn = func(uri string, _ []twiliolo.RequestOption) ([]byte, error) {
 		assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 
 		response := fmt.Sprintf(`
@@ -154,7 +155,7 @@ func TestGetIncomingPhoneNumber(t *testing.T) {
 		return []byte(response), nil
 	}
 
-	number, err := GetIncomingPhoneNumber(client, "TwiliololIncomingFake")
+	number, err := twiliolo.GetIncomingPhoneNumber(client, "TwiliololIncomingFake")
 
 	assert.NoError(t, err)
 	assert.Equal(t, testNumber, *number)

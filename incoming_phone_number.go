@@ -44,7 +44,7 @@ type IncomingPhoneNumber struct {
 func GetIncomingPhoneNumber(client Client, sid string, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
 	var incomingPhoneNumber *IncomingPhoneNumber
 
-	res, err := client.get(url.Values{}, "/IncomingPhoneNumbers/"+sid+".json", requestOptions)
+	res, err := client.Get("/IncomingPhoneNumbers/"+sid+".json", requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func UpdateIncomingPhoneNumber(client Client, incomingPhoneNumber *IncomingPhone
 	updates.Set("SmsFallbackMethod", incomingPhoneNumber.SmsFallbackMethod)
 	updates.Set("AccountSid", incomingPhoneNumber.AccountSid)
 
-	body, err := client.post(updates, "/IncomingPhoneNumbers/"+incomingPhoneNumber.Sid+".json", requestOptions)
+	body, err := client.Post("/IncomingPhoneNumbers/"+incomingPhoneNumber.Sid+".json", requestOptions, updates)
 	if err != nil {
 		return err
 	}
