@@ -3,7 +3,6 @@ package twiliolo
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -123,7 +122,6 @@ func (c *TwilioClient) Get(uri string, requestOptions []RequestOption) ([]byte, 
 		}
 
 		return body, twilioError
-
 	}
 
 	return body, err
@@ -149,8 +147,23 @@ func (c *TwilioClient) Delete(uri string, requestOptions []RequestOption) error 
 
 	defer res.Body.Close()
 
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
 	if res.StatusCode != 204 {
-		return fmt.Errorf("Non-204 returned from server for DELETE: %d", res.StatusCode)
+		if res.StatusCode == 500 {
+			return ErrTwilioServer
+		}
+
+		twilioError := new(TwilioError)
+		err := json.Unmarshal(body, &twilioError)
+		if err != nil {
+			return err
+		}
+
+		return twilioError
 	}
 
 	return nil
