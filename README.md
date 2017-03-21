@@ -30,7 +30,7 @@ import (
 func main() {
   client := twiliolo.NewClient("ACCOUNT_SID", "AUTH_TOKEN")
   
-  number, err := twilio.GetIncomingPhoneNumber(client, "NUMBER_SID")  
+  number, err := twiliolo.GetIncomingPhoneNumber(client, "NUMBER_SID")
   if err != nil {
     fmt.Println(err)
   } else {
