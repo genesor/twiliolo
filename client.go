@@ -47,7 +47,7 @@ func NewClient(accountSid, authToken string, httpClient HTTPClient) *TwilioClien
 }
 
 func (c *TwilioClient) Post(uri string, requestOptions []RequestOption, values url.Values) ([]byte, error) {
-	uri, err := c.buildURI(uri, requestOptions)
+	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (c *TwilioClient) Post(uri string, requestOptions []RequestOption, values u
 }
 
 func (c *TwilioClient) Get(uri string, requestOptions []RequestOption) ([]byte, error) {
-	uri, err := c.buildURI(uri, requestOptions)
+	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (c *TwilioClient) Get(uri string, requestOptions []RequestOption) ([]byte, 
 }
 
 func (c *TwilioClient) Delete(uri string, requestOptions []RequestOption) error {
-	uri, err := c.buildURI(uri, requestOptions)
+	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
 		return err
 	}
@@ -184,22 +184,21 @@ func (c *TwilioClient) RootURL() string {
 	return c.rootURL
 }
 
-func (c *TwilioClient) buildURI(uri string, requestOptions []RequestOption) (string, error) {
+func (c *TwilioClient) buildURL(uri string, requestOptions []RequestOption) (string, error) {
 	uri = strings.Trim(uri, "/")
 	if uri == "" {
 		return "", errors.New("Empty URI")
 	}
 
-	parts := make([]string, 0)
-
+	var urlStr string
 	// Check for "http" because sometimes we get raw URLs from following the metadata.
 	if !strings.HasPrefix(uri, "http") {
-		parts = append(parts, c.RootURL())
+		urlStr = c.RootURL() + "/" + uri
+	} else {
+		urlStr = uri
 	}
 
-	parts = append(parts, uri)
-
-	u, err := url.Parse(strings.Join(parts, "/"))
+	u, err := url.Parse(urlStr)
 	if err != nil {
 		return "", err
 	}
