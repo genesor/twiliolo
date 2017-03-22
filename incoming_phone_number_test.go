@@ -309,7 +309,9 @@ func TestIncomingPhoneNumberAll(t *testing.T) {
 
 	service := twiliolo.IncomingPhoneNumberService{Client: client}
 	phones, err := service.All()
-	assert.NoError(t, err)
-	assert.Equal(t, 3, len(phones))
 
+	assert.NoError(t, err)
+	assert.Equal(t, 3, client.GetCall)
+	assert.Equal(t, 3, len(phones))
+	assert.Equal(t, "TwiliololIncomingFake3", phones[2].Sid)
 }
