@@ -6,7 +6,7 @@ import (
 	"github.com/Genesor/twiliolo"
 )
 
-type MockClient struct {
+type MockAPIClient struct {
 	GetCall    int
 	GetFn      func(string, []twiliolo.RequestOption) ([]byte, error)
 	PostCall   int
@@ -15,30 +15,30 @@ type MockClient struct {
 	DeleteFn   func(string, []twiliolo.RequestOption) error
 }
 
-func (c *MockClient) AccountSid() string {
+func (c *MockAPIClient) AccountSid() string {
 	return "TwilioloFake"
 }
 
-func (c *MockClient) AuthToken() string {
+func (c *MockAPIClient) AuthToken() string {
 	return "TwilioloFakeToken"
 }
 
-func (c *MockClient) RootURL() string {
+func (c *MockAPIClient) RootURL() string {
 	return "http://fake.sadoma.so/"
 }
 
-func (c *MockClient) Get(uri string, requestOptions []twiliolo.RequestOption) ([]byte, error) {
+func (c *MockAPIClient) Get(uri string, requestOptions []twiliolo.RequestOption) ([]byte, error) {
 	c.GetCall++
 
 	return c.GetFn(uri, requestOptions)
 }
 
-func (c *MockClient) Post(uri string, requestOptions []twiliolo.RequestOption, updates url.Values) ([]byte, error) {
+func (c *MockAPIClient) Post(uri string, requestOptions []twiliolo.RequestOption, updates url.Values) ([]byte, error) {
 	c.PostCall++
 
 	return c.PostFn(uri, requestOptions, updates)
 }
-func (c *MockClient) Delete(uri string, requestOptions []twiliolo.RequestOption) error {
+func (c *MockAPIClient) Delete(uri string, requestOptions []twiliolo.RequestOption) error {
 	c.DeleteCall++
 
 	return c.DeleteFn(uri, requestOptions)

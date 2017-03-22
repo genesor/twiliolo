@@ -6,14 +6,10 @@ import (
 	"strconv"
 )
 
-// Capabilites represents a Twilio Incoming Phone Number capabilities (MMS, SMS, Voice)
-type Capabilites struct {
-	Voice bool `json:"voice"`
-	SMS   bool `json:"SMS"`
-	MMS   bool `json:"MMS"`
-}
+// IncomingPhoneNumberService handles communication with the Incoming Phone Number related methods.
+type IncomingPhoneNumberService service
 
-// IncomingPhoneNumber represents a Twilio Incoming Phone Number
+// IncomingPhoneNumber represents a Twilio Incoming Phone Number.
 type IncomingPhoneNumber struct {
 	Sid                  string      `json:"sid"`
 	AccountSid           string      `json:"account_sid"`
@@ -40,11 +36,18 @@ type IncomingPhoneNumber struct {
 	URI                  string      `json:"uri"`
 }
 
-// GetIncomingPhoneNumber performs a call to the twilio API to retrieve an Incoming Phone Number with its Sid
-func GetIncomingPhoneNumber(client Client, sid string, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
+// Capabilites represents a Twilio Incoming Phone Number capabilities (MMS, SMS, Voice).
+type Capabilites struct {
+	Voice bool `json:"voice"`
+	SMS   bool `json:"SMS"`
+	MMS   bool `json:"MMS"`
+}
+
+// Get performs a call to the twilio API to retrieve an Incoming Phone Number with its Sid.
+func (s *IncomingPhoneNumberService) Get(sid string, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
 	var incomingPhoneNumber *IncomingPhoneNumber
 
-	res, err := client.Get("/IncomingPhoneNumbers/"+sid+".json", requestOptions)
+	res, err := s.Client.Get("/IncomingPhoneNumbers/"+sid+".json", requestOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +58,8 @@ func GetIncomingPhoneNumber(client Client, sid string, requestOptions ...Request
 	return incomingPhoneNumber, err
 }
 
-// UpdateIncomingPhoneNumber performs the update of the differents attributes of an Incoming Phone Number
-func UpdateIncomingPhoneNumber(client Client, incomingPhoneNumber *IncomingPhoneNumber, requestOptions ...RequestOption) error {
+// Update performs the update of the differents attributes of an Incoming Phone Number.
+func (s *IncomingPhoneNumberService) Update(incomingPhoneNumber *IncomingPhoneNumber, requestOptions ...RequestOption) error {
 	if incomingPhoneNumber == nil || incomingPhoneNumber.Sid == "" {
 		return ErrIncomingPhoneMissingData
 	}
@@ -78,7 +81,7 @@ func UpdateIncomingPhoneNumber(client Client, incomingPhoneNumber *IncomingPhone
 	updates.Set("SmsFallbackMethod", incomingPhoneNumber.SmsFallbackMethod)
 	updates.Set("AccountSid", incomingPhoneNumber.AccountSid)
 
-	body, err := client.Post("/IncomingPhoneNumbers/"+incomingPhoneNumber.Sid+".json", requestOptions, updates)
+	body, err := s.Client.Post("/IncomingPhoneNumbers/"+incomingPhoneNumber.Sid+".json", requestOptions, updates)
 	if err != nil {
 		return err
 	}
@@ -94,4 +97,33 @@ func UpdateIncomingPhoneNumber(client Client, incomingPhoneNumber *IncomingPhone
 	incomingPhoneNumber = updatedIncomingPhoneNumber
 
 	return nil
+}
+
+// All retrieves all the incoming Phone Numbers of your account
+func (s *IncomingPhoneNumberService) All() ([]IncomingPhoneNumber, error) {
+
+	phones := make([]IncomingPhoneNumber, 0)
+
+	firstList, err := s.List(PageSize(200))
+	if err != nil {
+		return nil, err
+	}
+
+	phones = firstList.IncomingPhoneNumbers
+	previousList := firstList
+
+	for {
+		nextPage, err := s.ListNextPage(previousList)
+		if err != nil {
+			if err == ErrIncomingPhoneListNoNextPage {
+				break
+			}
+			return nil, err
+		}
+
+		phones = append(phones, nextPage.IncomingPhoneNumbers...)
+		previousList = nextPage
+	}
+
+	return phones, nil
 }
