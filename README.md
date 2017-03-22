@@ -28,9 +28,9 @@ import (
 )
 
 func main() {
-  client := twiliolo.NewClient("ACCOUNT_SID", "AUTH_TOKEN")
+  client := twiliolo.NewClient("ACCOUNT_SID", "AUTH_TOKEN", &http.Client{})
   
-  number, err := twiliolo.GetIncomingPhoneNumber(client, "NUMBER_SID")
+  number, err := client.IncomingPhoneNumber.Get("NUMBER_SID")
   if err != nil {
     fmt.Println(err)
   } else {
