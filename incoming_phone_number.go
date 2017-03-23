@@ -6,6 +6,15 @@ import (
 	"strconv"
 )
 
+// IncomingPhoneNumberServiceInterface is the interface of a IncomingPhoneNumberService
+type IncomingPhoneNumberServiceInterface interface {
+	Get(string, ...RequestOption) (*IncomingPhoneNumber, error)
+	Update(*IncomingPhoneNumber, ...RequestOption) error
+	All() ([]*IncomingPhoneNumber, error)
+	List(...RequestOption) (*IncomingPhoneNumberList, error)
+	ListNextPage(*IncomingPhoneNumberList, ...RequestOption) (*IncomingPhoneNumberList, error)
+}
+
 // IncomingPhoneNumberService handles communication with the Incoming Phone Number related methods.
 type IncomingPhoneNumberService service
 

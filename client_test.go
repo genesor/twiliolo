@@ -12,5 +12,5 @@ func TestNewClient(t *testing.T) {
 	client := twiliolo.NewClient("FAKE", "FAKE_FAKE", &internal.HTTPMockClient{})
 
 	assert.IsType(t, &twiliolo.TwilioClient{}, client)
-	assert.Equal(t, "FAKE_FAKE", client.APIClient.AuthToken())
+	assert.IsType(t, &twiliolo.IncomingPhoneNumberService{}, client.IncomingPhoneNumber)
 }
