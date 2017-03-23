@@ -7,13 +7,13 @@ import (
 
 // IncomingPhoneNumberList represents the response of the Twilio API when calling /IncomingPhoneNumbers.json
 type IncomingPhoneNumberList struct {
-	Page                 int                   `json:"page"`
-	PageSize             int                   `json:"page_size"`
-	URI                  string                `json:"uri"`
-	FirstPageURI         string                `json:"first_page_uri"`
-	NextPageURI          string                `json:"next_page_uri"`
-	PreviousPageURI      string                `json:"previous_page_uri"`
-	IncomingPhoneNumbers []IncomingPhoneNumber `json:"incoming_phone_numbers"`
+	Page                 int                    `json:"page"`
+	PageSize             int                    `json:"page_size"`
+	URI                  string                 `json:"uri"`
+	FirstPageURI         string                 `json:"first_page_uri"`
+	NextPageURI          string                 `json:"next_page_uri"`
+	PreviousPageURI      string                 `json:"previous_page_uri"`
+	IncomingPhoneNumbers []*IncomingPhoneNumber `json:"incoming_phone_numbers"`
 }
 
 // List retrieves the first page of all the Incoming Phone Number owned

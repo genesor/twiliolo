@@ -100,9 +100,9 @@ func (s *IncomingPhoneNumberService) Update(incomingPhoneNumber *IncomingPhoneNu
 }
 
 // All retrieves all the incoming Phone Numbers of your account
-func (s *IncomingPhoneNumberService) All() ([]IncomingPhoneNumber, error) {
+func (s *IncomingPhoneNumberService) All() ([]*IncomingPhoneNumber, error) {
 
-	phones := make([]IncomingPhoneNumber, 0)
+	phones := make([]*IncomingPhoneNumber, 0)
 
 	firstList, err := s.List(PageSize(200))
 	if err != nil {
