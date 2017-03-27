@@ -15,18 +15,6 @@ type MockAPIClient struct {
 	DeleteFn   func(string, []twiliolo.RequestOption) error
 }
 
-func (c *MockAPIClient) AccountSid() string {
-	return "TwilioloFake"
-}
-
-func (c *MockAPIClient) AuthToken() string {
-	return "TwilioloFakeToken"
-}
-
-func (c *MockAPIClient) RootURL() string {
-	return "http://fake.sadoma.so/"
-}
-
 func (c *MockAPIClient) Get(uri string, requestOptions []twiliolo.RequestOption) ([]byte, error) {
 	c.GetCall++
 

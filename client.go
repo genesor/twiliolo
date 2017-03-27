@@ -8,9 +8,6 @@ type service struct {
 
 // APIClient is the interface for an HTTP Twilio Client
 type APIClient interface {
-	AccountSid() string
-	AuthToken() string
-	RootURL() string
 	Get(string, []RequestOption) ([]byte, error)
 	Post(string, []RequestOption, url.Values) ([]byte, error)
 	Delete(string, []RequestOption) error

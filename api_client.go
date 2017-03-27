@@ -22,9 +22,9 @@ type HTTPClient interface {
 
 // TwilioAPIClient is the struct used to make the Twilio API calls
 type TwilioAPIClient struct {
-	accountSid string
-	authToken  string
-	rootURL    string
+	AccountSid string
+	AuthToken  string
+	RootURL    string
 	httpClient HTTPClient
 }
 
@@ -47,8 +47,8 @@ func (c *TwilioAPIClient) Post(uri string, requestOptions []RequestOption, value
 		return nil, err
 	}
 
-	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.SetBasicAuth(c.AccountSid, c.AuthToken)
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -87,7 +87,7 @@ func (c *TwilioAPIClient) Get(uri string, requestOptions []RequestOption) ([]byt
 		return nil, err
 	}
 
-	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
+	req.SetBasicAuth(c.AccountSid, c.AuthToken)
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -128,7 +128,7 @@ func (c *TwilioAPIClient) Delete(uri string, requestOptions []RequestOption) err
 		return err
 	}
 
-	req.SetBasicAuth(c.AccountSid(), c.AuthToken())
+	req.SetBasicAuth(c.AccountSid, c.AuthToken)
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -159,21 +159,6 @@ func (c *TwilioAPIClient) Delete(uri string, requestOptions []RequestOption) err
 	return nil
 }
 
-// AccountSid returns the AccountSid of the client
-func (c *TwilioAPIClient) AccountSid() string {
-	return c.accountSid
-}
-
-// AuthToken returns the AuthToken of the client
-func (c *TwilioAPIClient) AuthToken() string {
-	return c.authToken
-}
-
-// RootURL returns the RootURL of the client
-func (c *TwilioAPIClient) RootURL() string {
-	return c.rootURL
-}
-
 func (c *TwilioAPIClient) buildURL(uri string, requestOptions []RequestOption) (string, error) {
 	uri = strings.Trim(uri, "/")
 	if uri == "" {
@@ -183,7 +168,7 @@ func (c *TwilioAPIClient) buildURL(uri string, requestOptions []RequestOption) (
 	var urlStr string
 	// Check for "http" because sometimes we get raw URLs from following the metadata.
 	if !strings.HasPrefix(uri, "http") {
-		urlStr = c.RootURL() + "/" + uri
+		urlStr = c.RootURL + "/" + uri
 	} else {
 		urlStr = uri
 	}
