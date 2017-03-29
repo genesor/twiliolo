@@ -1,6 +1,6 @@
 package mock
 
-import "github.com/Genesor/twiliolo"
+import "github.com/genesor/twiliolo"
 
 // IncomingPhoneNumberService is the mock of a IncomingPhoneNumberService
 type IncomingPhoneNumberService struct {

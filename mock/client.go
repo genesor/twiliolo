@@ -1,6 +1,6 @@
 package mock
 
-import "github.com/Genesor/twiliolo"
+import "github.com/genesor/twiliolo"
 
 // NewMockClient instanciates a new TwilioClient with mocked services
 func NewMockClient() *twiliolo.TwilioClient {
