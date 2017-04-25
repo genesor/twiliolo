@@ -30,25 +30,24 @@ type AvailablePhoneNumber struct {
 	PostalCode string `json:"postal_code"`
 }
 
-type SearchAvailablePhoneNumber struct {
+type searchAvailablePhoneNumber struct {
 	AvailablePhoneNumbers []AvailablePhoneNumber `json:"available_phone_numbers"`
 	URI                   string                 `json:"uri"`
 }
 
 // Local performs a call to the twilio API to retrieve Incoming Phone Numbers
 // available with the given params
-func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
-	var incomingPhoneNumber *IncomingPhoneNumber
+func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions ...RequestOption) ([]AvailablePhoneNumber, error) {
+	var search searchAvailablePhoneNumber
 
-	res, err := s.Client.Get("/AvailablePhoneNumber/"+countryCode+"/Local.json", requestOptions)
+	res, err := s.Client.Get("/AvailablePhoneNumbers/"+countryCode+"/Local.json", requestOptions)
 	if err != nil {
 		return nil, err
 	}
 
-	incomingPhoneNumber = new(IncomingPhoneNumber)
-	err = json.Unmarshal(res, incomingPhoneNumber)
+	err = json.Unmarshal(res, &search)
 
-	return incomingPhoneNumber, err
+	return search.AvailablePhoneNumbers, err
 }
 
 // Buy performs the update of the differents attributes of an Incoming Phone Number.
@@ -63,12 +62,12 @@ func (s *AvailablePhoneNumberService) Buy(availablePhoneNumber *AvailablePhoneNu
 		return nil, err
 	}
 
-	var incomingPhoneNumber *IncomingPhoneNumber
+	var incomingPhoneNumber IncomingPhoneNumber
 
-	err = json.Unmarshal(body, incomingPhoneNumber)
+	err = json.Unmarshal(body, &incomingPhoneNumber)
 	if err != nil {
 		return nil, err
 	}
 
-	return incomingPhoneNumber, nil
+	return &incomingPhoneNumber, nil
 }
