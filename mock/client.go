@@ -6,6 +6,7 @@ import "github.com/genesor/twiliolo"
 func NewMockClient() *twiliolo.TwilioClient {
 	c := twiliolo.TwilioClient{}
 	c.IncomingPhoneNumber = &IncomingPhoneNumberService{}
+	c.AvailablePhoneNumber = &AvailablePhoneNumberService{}
 
 	return &c
 }

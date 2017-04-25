@@ -39,6 +39,7 @@ type searchAvailablePhoneNumber struct {
 
 // Local performs a call to the twilio API to retrieve Incoming Phone Numbers
 // available with the given params
+// Doc: https://www.twilio.com/docs/api/rest/available-phone-numbers#local-instance
 func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions ...option.RequestOption) ([]AvailablePhoneNumber, error) {
 	var search searchAvailablePhoneNumber
 
@@ -55,6 +56,7 @@ func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions .
 // Buy performs the update of the differents attributes of an Incoming Phone Number.
 // In case of a number with an address requirement you need to use the
 // web UI to buy one first
+// Doc: https://www.twilio.com/docs/api/rest/incoming-phone-numbers#list-post
 func (s *AvailablePhoneNumberService) Buy(availablePhoneNumber *AvailablePhoneNumber, requestOptions ...option.RequestOption) (*IncomingPhoneNumber, error) {
 
 	updates := url.Values{}

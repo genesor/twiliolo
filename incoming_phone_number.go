@@ -55,6 +55,7 @@ type Capabilites struct {
 }
 
 // Get performs a call to the twilio API to retrieve an Incoming Phone Number with its Sid.
+// Doc: https://www.twilio.com/docs/api/rest/incoming-phone-numbers#instance-get
 func (s *IncomingPhoneNumberService) Get(sid string, requestOptions ...option.RequestOption) (*IncomingPhoneNumber, error) {
 	var incomingPhoneNumber *IncomingPhoneNumber
 
@@ -70,6 +71,7 @@ func (s *IncomingPhoneNumberService) Get(sid string, requestOptions ...option.Re
 }
 
 // Update performs the update of the differents attributes of an Incoming Phone Number.
+// Doc: https://www.twilio.com/docs/api/rest/incoming-phone-numbers#instance-post
 func (s *IncomingPhoneNumberService) Update(incomingPhoneNumber *IncomingPhoneNumber, requestOptions ...option.RequestOption) error {
 	if incomingPhoneNumber == nil || incomingPhoneNumber.Sid == "" {
 		return ErrIncomingPhoneMissingData
@@ -111,6 +113,7 @@ func (s *IncomingPhoneNumberService) Update(incomingPhoneNumber *IncomingPhoneNu
 }
 
 // All retrieves all the incoming Phone Numbers of your account
+// Doc: https://www.twilio.com/docs/api/rest/incoming-phone-numbers#list-get
 func (s *IncomingPhoneNumberService) All() ([]*IncomingPhoneNumber, error) {
 
 	phones := make([]*IncomingPhoneNumber, 0)

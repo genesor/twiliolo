@@ -19,8 +19,9 @@ type APIClient interface {
 
 // TwilioClient is the struct containing all other services
 type TwilioClient struct {
-	common              service // Reuse a single struct instead of allocating one for each service on the heap.
-	IncomingPhoneNumber IncomingPhoneNumberServiceInterface
+	common               service // Reuse a single struct instead of allocating one for each service on the heap.
+	IncomingPhoneNumber  IncomingPhoneNumberServiceInterface
+	AvailablePhoneNumber AvailablePhoneNumberServiceInterface
 }
 
 // NewClient instanciates a new TwilioClient
@@ -28,6 +29,7 @@ func NewClient(accountSid string, authToken string, httpClient HTTPClient) *Twil
 	c := TwilioClient{}
 	c.common.Client = NewTwilioAPIClient(accountSid, authToken, httpClient)
 	c.IncomingPhoneNumber = (*IncomingPhoneNumberService)(&c.common)
+	c.AvailablePhoneNumber = (*AvailablePhoneNumberService)(&c.common)
 
 	return &c
 }

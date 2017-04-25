@@ -19,6 +19,7 @@ type IncomingPhoneNumberList struct {
 }
 
 // List retrieves the first page of all the Incoming Phone Number owned
+// Doc: https://www.twilio.com/docs/api/rest/incoming-phone-numbers#list-get
 func (s *IncomingPhoneNumberService) List(requestOptions ...option.RequestOption) (*IncomingPhoneNumberList, error) {
 	body, err := s.Client.Get("/IncomingPhoneNumbers.json", requestOptions)
 	if err != nil {
@@ -34,6 +35,7 @@ func (s *IncomingPhoneNumberService) List(requestOptions ...option.RequestOption
 
 // ListNextPage retrieves the next page of a given IncomingPhoneNumberList
 // If an empty NextPageURI is present in the struct it'll return an error
+// Doc: https://www.twilio.com/docs/api/rest/incoming-phone-numbers#list-get
 func (s *IncomingPhoneNumberService) ListNextPage(previousList *IncomingPhoneNumberList, requestOptions ...option.RequestOption) (*IncomingPhoneNumberList, error) {
 	if previousList == nil || previousList.NextPageURI == "" {
 		return nil, ErrIncomingPhoneListNoNextPage
