@@ -3,6 +3,9 @@
 Golang API wrapper for Twilio API [WIP]
 
 [![Build Status](https://travis-ci.org/genesor/twiliolo.svg?branch=master)](https://travis-ci.org/genesor/twiliolo)
+[![Go Report Card](https://goreportcard.com/badge/github.com/genesor/twiliolo)](https://goreportcard.com/report/github.com/genesor/twiliolo)
+[![GoDoc](https://godoc.org/github.com/genesor/twiliolo?status.svg)](https://godoc.org/github.com/genesor/twiliolo)
+
 
 
 # Installation
