@@ -51,6 +51,8 @@ func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions .
 }
 
 // Buy performs the update of the differents attributes of an Incoming Phone Number.
+// In case of a number with an address requirement you need to use the
+// web UI to buy one first
 func (s *AvailablePhoneNumberService) Buy(availablePhoneNumber *AvailablePhoneNumber, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
 
 	updates := url.Values{}
