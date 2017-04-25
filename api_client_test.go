@@ -6,9 +6,11 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/genesor/twiliolo"
 	"github.com/genesor/twiliolo/internal"
-	"github.com/stretchr/testify/assert"
+	"github.com/genesor/twiliolo/option"
 )
 
 const ACCOUNT_SID = "FAKE"
@@ -36,7 +38,7 @@ func TestGet(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		body, err := client.Get("/TestGet", make([]twiliolo.RequestOption, 0))
+		body, err := client.Get("/TestGet", make([]option.RequestOption, 0))
 
 		assert.NoError(t, err)
 		assert.Equal(t, []byte("Success"), body)
@@ -60,9 +62,9 @@ func TestGet(t *testing.T) {
 				Header:     http.Header{},
 			}, nil
 		}
-		queryParms := make([]twiliolo.RequestOption, 0)
-		queryParms = append(queryParms, twiliolo.Page(94))
-		queryParms = append(queryParms, twiliolo.PageSize(42))
+		queryParms := make([]option.RequestOption, 0)
+		queryParms = append(queryParms, option.Page(94))
+		queryParms = append(queryParms, option.PageSize(42))
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
 		body, err := client.Get("/TestGet", queryParms)
@@ -86,7 +88,7 @@ func TestGet(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		body, err := client.Get("/TestGet", make([]twiliolo.RequestOption, 0))
+		body, err := client.Get("/TestGet", make([]option.RequestOption, 0))
 
 		assert.Error(t, err)
 		assert.Equal(t, errors.New("Error perfoming the request"), err)
@@ -113,7 +115,7 @@ func TestGet(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		body, err := client.Get("/TestGet", make([]twiliolo.RequestOption, 0))
+		body, err := client.Get("/TestGet", make([]option.RequestOption, 0))
 
 		assert.Error(t, err)
 		assert.Equal(t, twiliolo.ErrTwilioServer, err)
@@ -145,7 +147,7 @@ func TestGet(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		body, err := client.Get("/TestGet", make([]twiliolo.RequestOption, 0))
+		body, err := client.Get("/TestGet", make([]option.RequestOption, 0))
 
 		assert.Error(t, err)
 
@@ -181,7 +183,7 @@ func TestGet(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		body, err := client.Get("/TestGet", make([]twiliolo.RequestOption, 0))
+		body, err := client.Get("/TestGet", make([]option.RequestOption, 0))
 
 		assert.Error(t, err)
 
@@ -214,7 +216,7 @@ func TestDelete(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		err := client.Delete("/TestDelete", make([]twiliolo.RequestOption, 0))
+		err := client.Delete("/TestDelete", make([]option.RequestOption, 0))
 
 		assert.NoError(t, err)
 	})
@@ -238,8 +240,8 @@ func TestDelete(t *testing.T) {
 			}, nil
 		}
 
-		queryParms := make([]twiliolo.RequestOption, 0)
-		queryParms = append(queryParms, twiliolo.PageSize(42))
+		queryParms := make([]option.RequestOption, 0)
+		queryParms = append(queryParms, option.PageSize(42))
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
 		err := client.Delete("/TestDelete", queryParms)
@@ -267,7 +269,7 @@ func TestDelete(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		err := client.Delete("/TestDelete", make([]twiliolo.RequestOption, 0))
+		err := client.Delete("/TestDelete", make([]option.RequestOption, 0))
 
 		assert.Error(t, err)
 		assert.Equal(t, twiliolo.ErrTwilioServer, err)
@@ -298,7 +300,7 @@ func TestDelete(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		err := client.Delete("/TestDelete", make([]twiliolo.RequestOption, 0))
+		err := client.Delete("/TestDelete", make([]option.RequestOption, 0))
 
 		assert.Error(t, err)
 
@@ -333,7 +335,7 @@ func TestDelete(t *testing.T) {
 		}
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
-		err := client.Delete("/TestDelete", make([]twiliolo.RequestOption, 0))
+		err := client.Delete("/TestDelete", make([]option.RequestOption, 0))
 
 		assert.Error(t, err)
 

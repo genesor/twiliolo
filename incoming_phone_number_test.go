@@ -9,6 +9,7 @@ import (
 
 	"github.com/genesor/twiliolo"
 	"github.com/genesor/twiliolo/internal"
+	"github.com/genesor/twiliolo/option"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -47,7 +48,7 @@ func TestIncomingPhoneNumberUpdate(t *testing.T) {
 		newUpdated := time.Now().Format(time.RFC1123Z)
 
 		client := new(internal.MockAPIClient)
-		client.PostFn = func(uri string, _ []twiliolo.RequestOption, params url.Values) ([]byte, error) {
+		client.PostFn = func(uri string, _ []option.RequestOption, params url.Values) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 			assert.Equal(t, "New Friendly Name", params.Get("FriendlyName"))
 			response := fmt.Sprintf(`
@@ -107,7 +108,7 @@ func TestIncomingPhoneNumberUpdate(t *testing.T) {
 
 	t.Run("NOK - Error on API call", func(t *testing.T) {
 		client := new(internal.MockAPIClient)
-		client.PostFn = func(uri string, _ []twiliolo.RequestOption, params url.Values) ([]byte, error) {
+		client.PostFn = func(uri string, _ []option.RequestOption, params url.Values) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 
 			return nil, errors.New("Error in API")
@@ -123,7 +124,7 @@ func TestIncomingPhoneNumberUpdate(t *testing.T) {
 
 func TestIncomingPhoneNumberGet(t *testing.T) {
 	client := new(internal.MockAPIClient)
-	client.GetFn = func(uri string, _ []twiliolo.RequestOption) ([]byte, error) {
+	client.GetFn = func(uri string, _ []option.RequestOption) ([]byte, error) {
 		assert.Equal(t, "/IncomingPhoneNumbers/TwiliololIncomingFake.json", uri)
 
 		response := fmt.Sprintf(`
@@ -169,11 +170,11 @@ func TestIncomingPhoneNumberGet(t *testing.T) {
 
 func TestIncomingPhoneNumberAll(t *testing.T) {
 	client := new(internal.MockAPIClient)
-	client.GetFn = func(uri string, requestOptions []twiliolo.RequestOption) ([]byte, error) {
+	client.GetFn = func(uri string, requestOptions []option.RequestOption) ([]byte, error) {
 		assert.Equal(t, "/IncomingPhoneNumbers.json", uri)
 
 		if len(requestOptions) == 1 {
-			assert.Equal(t, twiliolo.PageSize(200), requestOptions[0])
+			assert.Equal(t, option.PageSize(200), requestOptions[0])
 
 			response := fmt.Sprintf(`
 			{
@@ -215,8 +216,8 @@ func TestIncomingPhoneNumberAll(t *testing.T) {
 			}`, dateCreatedNumber.Format(time.RFC1123Z), dateUpdatedNumber.Format(time.RFC1123Z))
 
 			return []byte(response), nil
-		} else if len(requestOptions) == 2 && requestOptions[0] == twiliolo.Page(1) {
-			assert.Equal(t, twiliolo.PageSize(200), requestOptions[1])
+		} else if len(requestOptions) == 2 && requestOptions[0] == option.Page(1) {
+			assert.Equal(t, option.PageSize(200), requestOptions[1])
 
 			response := fmt.Sprintf(`
 			{
@@ -258,8 +259,8 @@ func TestIncomingPhoneNumberAll(t *testing.T) {
 			}`, dateCreatedNumber.Format(time.RFC1123Z), dateUpdatedNumber.Format(time.RFC1123Z))
 
 			return []byte(response), nil
-		} else if len(requestOptions) == 2 && requestOptions[0] == twiliolo.Page(2) {
-			assert.Equal(t, twiliolo.PageSize(200), requestOptions[1])
+		} else if len(requestOptions) == 2 && requestOptions[0] == option.Page(2) {
+			assert.Equal(t, option.PageSize(200), requestOptions[1])
 
 			response := fmt.Sprintf(`
 			{

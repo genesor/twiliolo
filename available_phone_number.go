@@ -3,11 +3,13 @@ package twiliolo
 import (
 	"encoding/json"
 	"net/url"
+
+	"github.com/genesor/twiliolo/option"
 )
 
 // AvailablePhoneNumberServiceInterface is the interface of a IncomingPhoneNumberService
 type AvailablePhoneNumberServiceInterface interface {
-	Local(string, ...RequestOption) ([]AvailablePhoneNumber, error)
+	Local(string, ...option.RequestOption) ([]AvailablePhoneNumber, error)
 }
 
 // AvailablePhoneNumberService handles communication with the Incoming Phone Number related methods.
@@ -37,7 +39,7 @@ type searchAvailablePhoneNumber struct {
 
 // Local performs a call to the twilio API to retrieve Incoming Phone Numbers
 // available with the given params
-func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions ...RequestOption) ([]AvailablePhoneNumber, error) {
+func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions ...option.RequestOption) ([]AvailablePhoneNumber, error) {
 	var search searchAvailablePhoneNumber
 
 	res, err := s.Client.Get("/AvailablePhoneNumbers/"+countryCode+"/Local.json", requestOptions)
@@ -53,7 +55,7 @@ func (s *AvailablePhoneNumberService) Local(countryCode string, requestOptions .
 // Buy performs the update of the differents attributes of an Incoming Phone Number.
 // In case of a number with an address requirement you need to use the
 // web UI to buy one first
-func (s *AvailablePhoneNumberService) Buy(availablePhoneNumber *AvailablePhoneNumber, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
+func (s *AvailablePhoneNumberService) Buy(availablePhoneNumber *AvailablePhoneNumber, requestOptions ...option.RequestOption) (*IncomingPhoneNumber, error) {
 
 	updates := url.Values{}
 	updates.Set("PhoneNumber", availablePhoneNumber.PhoneNumber)

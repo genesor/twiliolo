@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/genesor/twiliolo/option"
 )
 
 // ROOT is the baseURL of the Twilio API
@@ -36,7 +38,7 @@ func NewTwilioAPIClient(accountSid, authToken string, httpClient HTTPClient) *Tw
 	return &TwilioAPIClient{accountSid, authToken, rootURL, httpClient}
 }
 
-func (c *TwilioAPIClient) Post(uri string, requestOptions []RequestOption, values url.Values) ([]byte, error) {
+func (c *TwilioAPIClient) Post(uri string, requestOptions []option.RequestOption, values url.Values) ([]byte, error) {
 	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
 		return nil, err
@@ -76,7 +78,7 @@ func (c *TwilioAPIClient) Post(uri string, requestOptions []RequestOption, value
 	return body, err
 }
 
-func (c *TwilioAPIClient) Get(uri string, requestOptions []RequestOption) ([]byte, error) {
+func (c *TwilioAPIClient) Get(uri string, requestOptions []option.RequestOption) ([]byte, error) {
 	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
 		return nil, err
@@ -117,7 +119,7 @@ func (c *TwilioAPIClient) Get(uri string, requestOptions []RequestOption) ([]byt
 	return body, err
 }
 
-func (c *TwilioAPIClient) Delete(uri string, requestOptions []RequestOption) error {
+func (c *TwilioAPIClient) Delete(uri string, requestOptions []option.RequestOption) error {
 	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
 		return err
@@ -159,7 +161,7 @@ func (c *TwilioAPIClient) Delete(uri string, requestOptions []RequestOption) err
 	return nil
 }
 
-func (c *TwilioAPIClient) buildURL(uri string, requestOptions []RequestOption) (string, error) {
+func (c *TwilioAPIClient) buildURL(uri string, requestOptions []option.RequestOption) (string, error) {
 	uri = strings.Trim(uri, "/")
 	if uri == "" {
 		return "", errors.New("Empty URI")

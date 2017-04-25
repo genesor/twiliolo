@@ -7,6 +7,7 @@ import (
 
 	"github.com/genesor/twiliolo"
 	"github.com/genesor/twiliolo/internal"
+	"github.com/genesor/twiliolo/option"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,7 +18,7 @@ var (
 
 func TestIncomingPhoneNumberList(t *testing.T) {
 	client := new(internal.MockAPIClient)
-	client.GetFn = func(uri string, _ []twiliolo.RequestOption) ([]byte, error) {
+	client.GetFn = func(uri string, _ []option.RequestOption) ([]byte, error) {
 		assert.Equal(t, "/IncomingPhoneNumbers.json", uri)
 
 		response := fmt.Sprintf(`
@@ -106,10 +107,10 @@ func TestIncomingPhoneNumberList(t *testing.T) {
 func TestIncomingPhoneNumberListNextPage(t *testing.T) {
 	t.Run("OK - GET next page", func(t *testing.T) {
 		client := new(internal.MockAPIClient)
-		client.GetFn = func(uri string, requestOptions []twiliolo.RequestOption) ([]byte, error) {
+		client.GetFn = func(uri string, requestOptions []option.RequestOption) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers.json", uri)
-			assert.Equal(t, twiliolo.Page(1), requestOptions[0])
-			assert.Equal(t, twiliolo.PageSize(94), requestOptions[1])
+			assert.Equal(t, option.Page(1), requestOptions[0])
+			assert.Equal(t, option.PageSize(94), requestOptions[1])
 
 			response := fmt.Sprintf(`
 			{

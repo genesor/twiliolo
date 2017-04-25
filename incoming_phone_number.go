@@ -4,15 +4,17 @@ import (
 	"encoding/json"
 	"net/url"
 	"strconv"
+
+	"github.com/genesor/twiliolo/option"
 )
 
 // IncomingPhoneNumberServiceInterface is the interface of a IncomingPhoneNumberService
 type IncomingPhoneNumberServiceInterface interface {
-	Get(string, ...RequestOption) (*IncomingPhoneNumber, error)
-	Update(*IncomingPhoneNumber, ...RequestOption) error
+	Get(string, ...option.RequestOption) (*IncomingPhoneNumber, error)
+	Update(*IncomingPhoneNumber, ...option.RequestOption) error
 	All() ([]*IncomingPhoneNumber, error)
-	List(...RequestOption) (*IncomingPhoneNumberList, error)
-	ListNextPage(*IncomingPhoneNumberList, ...RequestOption) (*IncomingPhoneNumberList, error)
+	List(...option.RequestOption) (*IncomingPhoneNumberList, error)
+	ListNextPage(*IncomingPhoneNumberList, ...option.RequestOption) (*IncomingPhoneNumberList, error)
 }
 
 // IncomingPhoneNumberService handles communication with the Incoming Phone Number related methods.
@@ -53,7 +55,7 @@ type Capabilites struct {
 }
 
 // Get performs a call to the twilio API to retrieve an Incoming Phone Number with its Sid.
-func (s *IncomingPhoneNumberService) Get(sid string, requestOptions ...RequestOption) (*IncomingPhoneNumber, error) {
+func (s *IncomingPhoneNumberService) Get(sid string, requestOptions ...option.RequestOption) (*IncomingPhoneNumber, error) {
 	var incomingPhoneNumber *IncomingPhoneNumber
 
 	res, err := s.Client.Get("/IncomingPhoneNumbers/"+sid+".json", requestOptions)
@@ -68,7 +70,7 @@ func (s *IncomingPhoneNumberService) Get(sid string, requestOptions ...RequestOp
 }
 
 // Update performs the update of the differents attributes of an Incoming Phone Number.
-func (s *IncomingPhoneNumberService) Update(incomingPhoneNumber *IncomingPhoneNumber, requestOptions ...RequestOption) error {
+func (s *IncomingPhoneNumberService) Update(incomingPhoneNumber *IncomingPhoneNumber, requestOptions ...option.RequestOption) error {
 	if incomingPhoneNumber == nil || incomingPhoneNumber.Sid == "" {
 		return ErrIncomingPhoneMissingData
 	}
@@ -113,7 +115,7 @@ func (s *IncomingPhoneNumberService) All() ([]*IncomingPhoneNumber, error) {
 
 	phones := make([]*IncomingPhoneNumber, 0)
 
-	firstList, err := s.List(PageSize(200))
+	firstList, err := s.List(option.PageSize(200))
 	if err != nil {
 		return nil, err
 	}
