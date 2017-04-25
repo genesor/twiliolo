@@ -3,7 +3,7 @@ package internal
 import (
 	"net/url"
 
-	"github.com/Genesor/twiliolo"
+	"github.com/genesor/twiliolo"
 )
 
 type MockAPIClient struct {

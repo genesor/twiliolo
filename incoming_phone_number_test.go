@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Genesor/twiliolo"
-	"github.com/Genesor/twiliolo/internal"
+	"github.com/genesor/twiliolo"
+	"github.com/genesor/twiliolo/internal"
 	"github.com/stretchr/testify/assert"
 )
 
