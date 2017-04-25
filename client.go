@@ -1,6 +1,10 @@
 package twiliolo
 
-import "net/url"
+import (
+	"net/url"
+
+	"github.com/genesor/twiliolo/option"
+)
 
 type service struct {
 	Client APIClient
@@ -8,9 +12,9 @@ type service struct {
 
 // APIClient is the interface for an HTTP Twilio Client
 type APIClient interface {
-	Get(string, []RequestOption) ([]byte, error)
-	Post(string, []RequestOption, url.Values) ([]byte, error)
-	Delete(string, []RequestOption) error
+	Get(string, []option.RequestOption) ([]byte, error)
+	Post(string, []option.RequestOption, url.Values) ([]byte, error)
+	Delete(string, []option.RequestOption) error
 }
 
 // TwilioClient is the struct containing all other services

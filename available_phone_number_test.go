@@ -9,13 +9,14 @@ import (
 
 	"github.com/genesor/twiliolo"
 	"github.com/genesor/twiliolo/internal"
+	"github.com/genesor/twiliolo/option"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAvailablePhoneNumberLocal(t *testing.T) {
 	client := new(internal.MockAPIClient)
-	client.GetFn = func(uri string, options []twiliolo.RequestOption) ([]byte, error) {
-		assert.Equal(t, twiliolo.VoiceEnabled(true), options[0])
+	client.GetFn = func(uri string, options []option.RequestOption) ([]byte, error) {
+		assert.Equal(t, option.VoiceEnabled(true), options[0])
 		assert.Equal(t, "/AvailablePhoneNumbers/FR/Local.json", uri)
 
 		response := `
@@ -52,7 +53,7 @@ func TestAvailablePhoneNumberLocal(t *testing.T) {
 	}
 
 	service := twiliolo.AvailablePhoneNumberService{Client: client}
-	list, err := service.Local("FR", twiliolo.VoiceEnabled(true))
+	list, err := service.Local("FR", option.VoiceEnabled(true))
 
 	assert.NoError(t, err)
 	assert.Equal(t, 1, client.GetCall)
@@ -71,7 +72,7 @@ func TestAvailablePhoneNumberLocal(t *testing.T) {
 
 func TestAvailablePhoneNumberBuy(t *testing.T) {
 	client := new(internal.MockAPIClient)
-	client.PostFn = func(uri string, _ []twiliolo.RequestOption, values url.Values) ([]byte, error) {
+	client.PostFn = func(uri string, _ []option.RequestOption, values url.Values) ([]byte, error) {
 		assert.Equal(t, "+3399887799", values.Get("PhoneNumber"))
 		assert.Equal(t, "FriendlyName", values.Get("FriendlyName"))
 		assert.Equal(t, "/IncomingPhoneNumbers.json", uri)

@@ -3,6 +3,8 @@ package twiliolo
 import (
 	"encoding/json"
 	"reflect"
+
+	"github.com/genesor/twiliolo/option"
 )
 
 // IncomingPhoneNumberList represents the response of the Twilio API when calling /IncomingPhoneNumbers.json
@@ -17,7 +19,7 @@ type IncomingPhoneNumberList struct {
 }
 
 // List retrieves the first page of all the Incoming Phone Number owned
-func (s *IncomingPhoneNumberService) List(requestOptions ...RequestOption) (*IncomingPhoneNumberList, error) {
+func (s *IncomingPhoneNumberService) List(requestOptions ...option.RequestOption) (*IncomingPhoneNumberList, error) {
 	body, err := s.Client.Get("/IncomingPhoneNumbers.json", requestOptions)
 	if err != nil {
 		return nil, err
@@ -32,14 +34,14 @@ func (s *IncomingPhoneNumberService) List(requestOptions ...RequestOption) (*Inc
 
 // ListNextPage retrieves the next page of a given IncomingPhoneNumberList
 // If an empty NextPageURI is present in the struct it'll return an error
-func (s *IncomingPhoneNumberService) ListNextPage(previousList *IncomingPhoneNumberList, requestOptions ...RequestOption) (*IncomingPhoneNumberList, error) {
+func (s *IncomingPhoneNumberService) ListNextPage(previousList *IncomingPhoneNumberList, requestOptions ...option.RequestOption) (*IncomingPhoneNumberList, error) {
 	if previousList == nil || previousList.NextPageURI == "" {
 		return nil, ErrIncomingPhoneListNoNextPage
 	}
 
-	newRequestOptions := make([]RequestOption, 2)
-	newRequestOptions[0] = Page(previousList.Page + 1)
-	newRequestOptions[1] = PageSize(previousList.PageSize)
+	newRequestOptions := make([]option.RequestOption, 2)
+	newRequestOptions[0] = option.Page(previousList.Page + 1)
+	newRequestOptions[1] = option.PageSize(previousList.PageSize)
 
 	for _, option := range requestOptions {
 		// Override Page and PageSize options
