@@ -113,7 +113,7 @@ func (s *IncomingPhoneNumberService) All() ([]*IncomingPhoneNumber, error) {
 
 	phones := make([]*IncomingPhoneNumber, 0)
 
-	firstList, err := s.List(PageSize(200))
+	firstList, err := s.List(OptionPageSize(200))
 	if err != nil {
 		return nil, err
 	}

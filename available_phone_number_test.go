@@ -15,7 +15,7 @@ import (
 func TestAvailablePhoneNumberLocal(t *testing.T) {
 	client := new(internal.MockAPIClient)
 	client.GetFn = func(uri string, options []twiliolo.RequestOption) ([]byte, error) {
-		assert.Equal(t, twiliolo.VoiceEnabled(true), options[0])
+		assert.Equal(t, twiliolo.OptionVoiceEnabled(true), options[0])
 		assert.Equal(t, "/AvailablePhoneNumbers/FR/Local.json", uri)
 
 		response := `
@@ -52,7 +52,7 @@ func TestAvailablePhoneNumberLocal(t *testing.T) {
 	}
 
 	service := twiliolo.AvailablePhoneNumberService{Client: client}
-	list, err := service.Local("FR", twiliolo.VoiceEnabled(true))
+	list, err := service.Local("FR", twiliolo.OptionVoiceEnabled(true))
 
 	assert.NoError(t, err)
 	assert.Equal(t, 1, client.GetCall)

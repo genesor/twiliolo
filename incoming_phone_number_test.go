@@ -173,7 +173,7 @@ func TestIncomingPhoneNumberAll(t *testing.T) {
 		assert.Equal(t, "/IncomingPhoneNumbers.json", uri)
 
 		if len(requestOptions) == 1 {
-			assert.Equal(t, twiliolo.PageSize(200), requestOptions[0])
+			assert.Equal(t, twiliolo.OptionPageSize(200), requestOptions[0])
 
 			response := fmt.Sprintf(`
 			{
@@ -215,8 +215,8 @@ func TestIncomingPhoneNumberAll(t *testing.T) {
 			}`, dateCreatedNumber.Format(time.RFC1123Z), dateUpdatedNumber.Format(time.RFC1123Z))
 
 			return []byte(response), nil
-		} else if len(requestOptions) == 2 && requestOptions[0] == twiliolo.Page(1) {
-			assert.Equal(t, twiliolo.PageSize(200), requestOptions[1])
+		} else if len(requestOptions) == 2 && requestOptions[0] == twiliolo.OptionPage(1) {
+			assert.Equal(t, twiliolo.OptionPageSize(200), requestOptions[1])
 
 			response := fmt.Sprintf(`
 			{
@@ -258,8 +258,8 @@ func TestIncomingPhoneNumberAll(t *testing.T) {
 			}`, dateCreatedNumber.Format(time.RFC1123Z), dateUpdatedNumber.Format(time.RFC1123Z))
 
 			return []byte(response), nil
-		} else if len(requestOptions) == 2 && requestOptions[0] == twiliolo.Page(2) {
-			assert.Equal(t, twiliolo.PageSize(200), requestOptions[1])
+		} else if len(requestOptions) == 2 && requestOptions[0] == twiliolo.OptionPage(2) {
+			assert.Equal(t, twiliolo.OptionPageSize(200), requestOptions[1])
 
 			response := fmt.Sprintf(`
 			{

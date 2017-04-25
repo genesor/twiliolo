@@ -38,8 +38,8 @@ func (s *IncomingPhoneNumberService) ListNextPage(previousList *IncomingPhoneNum
 	}
 
 	newRequestOptions := make([]RequestOption, 2)
-	newRequestOptions[0] = Page(previousList.Page + 1)
-	newRequestOptions[1] = PageSize(previousList.PageSize)
+	newRequestOptions[0] = OptionPage(previousList.Page + 1)
+	newRequestOptions[1] = OptionPageSize(previousList.PageSize)
 
 	for _, option := range requestOptions {
 		// Override Page and PageSize options

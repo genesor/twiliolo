@@ -61,8 +61,8 @@ func TestGet(t *testing.T) {
 			}, nil
 		}
 		queryParms := make([]twiliolo.RequestOption, 0)
-		queryParms = append(queryParms, twiliolo.Page(94))
-		queryParms = append(queryParms, twiliolo.PageSize(42))
+		queryParms = append(queryParms, twiliolo.OptionPage(94))
+		queryParms = append(queryParms, twiliolo.OptionPageSize(42))
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
 		body, err := client.Get("/TestGet", queryParms)
@@ -239,7 +239,7 @@ func TestDelete(t *testing.T) {
 		}
 
 		queryParms := make([]twiliolo.RequestOption, 0)
-		queryParms = append(queryParms, twiliolo.PageSize(42))
+		queryParms = append(queryParms, twiliolo.OptionPageSize(42))
 
 		client := twiliolo.NewTwilioAPIClient(ACCOUNT_SID, AUTH_TOKEN, &httpMock)
 		err := client.Delete("/TestDelete", queryParms)

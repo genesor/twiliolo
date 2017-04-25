@@ -108,8 +108,8 @@ func TestIncomingPhoneNumberListNextPage(t *testing.T) {
 		client := new(internal.MockAPIClient)
 		client.GetFn = func(uri string, requestOptions []twiliolo.RequestOption) ([]byte, error) {
 			assert.Equal(t, "/IncomingPhoneNumbers.json", uri)
-			assert.Equal(t, twiliolo.Page(1), requestOptions[0])
-			assert.Equal(t, twiliolo.PageSize(94), requestOptions[1])
+			assert.Equal(t, twiliolo.OptionPage(1), requestOptions[0])
+			assert.Equal(t, twiliolo.OptionPageSize(94), requestOptions[1])
 
 			response := fmt.Sprintf(`
 			{

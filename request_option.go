@@ -6,74 +6,74 @@ type RequestOption interface {
 	GetValue() (string, string)
 }
 
-type Page int
+type OptionPage int
 
-func (o Page) GetValue() (string, string) {
+func (o OptionPage) GetValue() (string, string) {
 	return "Page", strconv.Itoa(int(o))
 }
 
-type PageSize int
+type OptionPageSize int
 
-func (o PageSize) GetValue() (string, string) {
+func (o OptionPageSize) GetValue() (string, string) {
 	return "PageSize", strconv.Itoa(int(o))
 }
 
-type Beta bool
+type OptionBeta bool
 
-func (o Beta) GetValue() (string, string) {
+func (o OptionBeta) GetValue() (string, string) {
 	return "Beta", strconv.FormatBool(bool(o))
 }
 
-type AreaCode string
+type OptionAreaCode string
 
-func (o AreaCode) GetValue() (string, string) {
+func (o OptionAreaCode) GetValue() (string, string) {
 	return "AreaCode", string(o)
 }
 
-type Contains int
+type OptionContains int
 
-func (o Contains) GetValue() (string, string) {
+func (o OptionContains) GetValue() (string, string) {
 	return "Contains", string(o)
 }
 
-type SMSEnabled bool
+type OptionSMSEnabled bool
 
-func (o SMSEnabled) GetValue() (string, string) {
+func (o OptionSMSEnabled) GetValue() (string, string) {
 	return "SmsEnabled", strconv.FormatBool(bool(o))
 }
 
-type MMSEnabled bool
+type OptionMMSEnabled bool
 
-func (o MMSEnabled) GetValue() (string, string) {
+func (o OptionMMSEnabled) GetValue() (string, string) {
 	return "MmsEnabled", strconv.FormatBool(bool(o))
 }
 
-type VoiceEnabled bool
+type OptionVoiceEnabled bool
 
-func (o VoiceEnabled) GetValue() (string, string) {
+func (o OptionVoiceEnabled) GetValue() (string, string) {
 	return "VoiceEnabled", strconv.FormatBool(bool(o))
 }
 
-type FaxEnabled bool
+type OptionFaxEnabled bool
 
-func (o FaxEnabled) GetValue() (string, string) {
+func (o OptionFaxEnabled) GetValue() (string, string) {
 	return "FaxEnabled", strconv.FormatBool(bool(o))
 }
 
-type ExcludeAllAddressRequired bool
+type OptionExcludeAllAddressRequired bool
 
-func (o ExcludeAllAddressRequired) GetValue() (string, string) {
+func (o OptionExcludeAllAddressRequired) GetValue() (string, string) {
 	return "ExcludeAllAddressRequired", strconv.FormatBool(bool(o))
 }
 
-type ExcludeForeignAddressRequired bool
+type OptionExcludeForeignAddressRequired bool
 
-func (o ExcludeForeignAddressRequired) GetValue() (string, string) {
+func (o OptionExcludeForeignAddressRequired) GetValue() (string, string) {
 	return "ExcludeForeignAddressRequired	", strconv.FormatBool(bool(o))
 }
 
-type ExcludeLocalAddressRequired bool
+type OptionExcludeLocalAddressRequired bool
 
-func (o ExcludeLocalAddressRequired) GetValue() (string, string) {
+func (o OptionExcludeLocalAddressRequired) GetValue() (string, string) {
 	return "ExcludeLocalAddressRequired", strconv.FormatBool(bool(o))
 }
