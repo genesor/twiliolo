@@ -38,6 +38,7 @@ func NewTwilioAPIClient(accountSid, authToken string, httpClient HTTPClient) *Tw
 	return &TwilioAPIClient{accountSid, authToken, rootURL, httpClient}
 }
 
+// Post performs a POST HTTP request with the given values.
 func (c *TwilioAPIClient) Post(uri string, requestOptions []option.RequestOption, values url.Values) ([]byte, error) {
 	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
@@ -78,6 +79,7 @@ func (c *TwilioAPIClient) Post(uri string, requestOptions []option.RequestOption
 	return body, err
 }
 
+// Get performs a GET HTTP request with the given values.
 func (c *TwilioAPIClient) Get(uri string, requestOptions []option.RequestOption) ([]byte, error) {
 	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {
@@ -119,6 +121,7 @@ func (c *TwilioAPIClient) Get(uri string, requestOptions []option.RequestOption)
 	return body, err
 }
 
+// Delete performs a DELETE HTTP request with the given values.
 func (c *TwilioAPIClient) Delete(uri string, requestOptions []option.RequestOption) error {
 	uri, err := c.buildURL(uri, requestOptions)
 	if err != nil {

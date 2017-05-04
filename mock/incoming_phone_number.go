@@ -19,30 +19,35 @@ type IncomingPhoneNumberService struct {
 	ListNextPageCall int
 }
 
+// Get mocked function.
 func (s *IncomingPhoneNumberService) Get(sid string, requestOptions ...option.RequestOption) (*twiliolo.IncomingPhoneNumber, error) {
 	s.GetCall++
 
 	return s.GetFn(sid, requestOptions)
 }
 
+// Update mocked function.
 func (s *IncomingPhoneNumberService) Update(incomingPhoneNumber *twiliolo.IncomingPhoneNumber, requestOptions ...option.RequestOption) error {
 	s.UpdateCall++
 
 	return s.UpdateFn(incomingPhoneNumber, requestOptions)
 }
 
+// All mocked function.
 func (s *IncomingPhoneNumberService) All() ([]*twiliolo.IncomingPhoneNumber, error) {
 	s.AllCall++
 
 	return s.AllFn()
 }
 
+// List mocked function.
 func (s *IncomingPhoneNumberService) List(requestOptions ...option.RequestOption) (*twiliolo.IncomingPhoneNumberList, error) {
 	s.ListCall++
 
 	return s.ListFn(requestOptions)
 }
 
+// ListNextPage mocked function.
 func (s *IncomingPhoneNumberService) ListNextPage(previousList *twiliolo.IncomingPhoneNumberList, requestOptions ...option.RequestOption) (*twiliolo.IncomingPhoneNumberList, error) {
 	s.ListNextPageCall++
 

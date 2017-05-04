@@ -6,11 +6,13 @@ import (
 	"strings"
 )
 
+// HTTPMockClient is a mocked implementation of the HTTPClient interface.
 type HTTPMockClient struct {
 	DoCall int
 	DoFn   func(*http.Request) (*http.Response, error)
 }
 
+// Do mocked function.
 func (c *HTTPMockClient) Do(req *http.Request) (*http.Response, error) {
 	c.DoCall++
 

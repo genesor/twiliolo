@@ -13,12 +13,14 @@ type AvailablePhoneNumberService struct {
 	BuyCall   int
 }
 
+// Local mocked function.
 func (s *AvailablePhoneNumberService) Local(country string, requestOptions ...option.RequestOption) ([]twiliolo.AvailablePhoneNumber, error) {
 	s.LocalCall++
 
 	return s.LocalFn(country, requestOptions)
 }
 
+// Buy mocked function.
 func (s *AvailablePhoneNumberService) Buy(phone *twiliolo.AvailablePhoneNumber, requestOptions ...option.RequestOption) (*twiliolo.IncomingPhoneNumber, error) {
 	s.BuyCall++
 
