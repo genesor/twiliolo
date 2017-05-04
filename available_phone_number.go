@@ -18,12 +18,12 @@ type AvailablePhoneNumberService service
 
 // AvailablePhoneNumber represents a Twilio Incoming Phone Number.
 type AvailablePhoneNumber struct {
-	FriendlyName        string      `json:"friendly_name"`
-	PhoneNumber         string      `json:"phone_number"`
-	ISOCountry          string      `json:"iso_country"`
-	AddressRequirements string      `json:"address_requirements"`
-	Capabilities        Capabilites `json:"capabilities"`
-	Beta                bool        `json:"beta"`
+	FriendlyName        string       `json:"friendly_name"`
+	PhoneNumber         string       `json:"phone_number"`
+	ISOCountry          string       `json:"iso_country"`
+	AddressRequirements string       `json:"address_requirements"`
+	Capabilities        Capabilities `json:"capabilities"`
+	Beta                bool         `json:"beta"`
 	// US & CA Only
 	Lata       string `json:"lata"`
 	RateCenter string `json:"rate_center"`

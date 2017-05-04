@@ -117,7 +117,7 @@ func TestAvailablePhoneNumberBuy(t *testing.T) {
 		ISOCountry:          "FR",
 		AddressRequirements: "",
 		Beta:                false,
-		Capabilities: twiliolo.Capabilites{
+		Capabilities: twiliolo.Capabilities{
 			SMS:   false,
 			MMS:   false,
 			Voice: true,

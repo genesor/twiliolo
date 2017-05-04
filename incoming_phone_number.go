@@ -22,33 +22,33 @@ type IncomingPhoneNumberService service
 
 // IncomingPhoneNumber represents a Twilio Incoming Phone Number.
 type IncomingPhoneNumber struct {
-	Sid                  string      `json:"sid"`
-	AccountSid           string      `json:"account_sid"`
-	FriendlyName         string      `json:"friendly_name"`
-	PhoneNumber          string      `json:"phone_number"`
-	VoiceURL             string      `json:"voice_url"`
-	VoiceMethod          string      `json:"voice_method"`
-	VoiceFallbackURL     string      `json:"voice_fallback_url"`
-	VoiceFallbackMethod  string      `json:"voice_fallback_method"`
-	StatusCallback       string      `json:"status_callback"`
-	StatusCallbackMethod string      `json:"status_callback_method"`
-	VoiceCallerIDLookup  bool        `json:"voice_caller_id_lookup"`
-	VoiceApplicationSid  string      `json:"voice_application_sid"`
-	DateCreated          string      `json:"date_created"`
-	DateUpdated          string      `json:"date_updated"`
-	SmsURL               string      `json:"sms_url"`
-	SmsMethod            string      `json:"sms_method"`
-	SmsFallbackURL       string      `json:"sms_fallback_url"`
-	SmsFallbackMethod    string      `json:"sms_fallback_method"`
-	SmsApplicationSid    string      `json:"sms_application_sid"`
-	Capabilities         Capabilites `json:"capabilities"`
-	Beta                 bool        `json:"beta"`
-	APIVersion           string      `json:"api_version"`
-	URI                  string      `json:"uri"`
+	Sid                  string       `json:"sid"`
+	AccountSid           string       `json:"account_sid"`
+	FriendlyName         string       `json:"friendly_name"`
+	PhoneNumber          string       `json:"phone_number"`
+	VoiceURL             string       `json:"voice_url"`
+	VoiceMethod          string       `json:"voice_method"`
+	VoiceFallbackURL     string       `json:"voice_fallback_url"`
+	VoiceFallbackMethod  string       `json:"voice_fallback_method"`
+	StatusCallback       string       `json:"status_callback"`
+	StatusCallbackMethod string       `json:"status_callback_method"`
+	VoiceCallerIDLookup  bool         `json:"voice_caller_id_lookup"`
+	VoiceApplicationSid  string       `json:"voice_application_sid"`
+	DateCreated          string       `json:"date_created"`
+	DateUpdated          string       `json:"date_updated"`
+	SmsURL               string       `json:"sms_url"`
+	SmsMethod            string       `json:"sms_method"`
+	SmsFallbackURL       string       `json:"sms_fallback_url"`
+	SmsFallbackMethod    string       `json:"sms_fallback_method"`
+	SmsApplicationSid    string       `json:"sms_application_sid"`
+	Capabilities         Capabilities `json:"capabilities"`
+	Beta                 bool         `json:"beta"`
+	APIVersion           string       `json:"api_version"`
+	URI                  string       `json:"uri"`
 }
 
-// Capabilites represents a Twilio Incoming Phone Number capabilities (MMS, SMS, Voice).
-type Capabilites struct {
+// Capabilities represents a Twilio Incoming Phone Number capabilities (MMS, SMS, Voice).
+type Capabilities struct {
 	Voice bool `json:"voice"`
 	SMS   bool `json:"SMS"`
 	MMS   bool `json:"MMS"`

@@ -35,7 +35,7 @@ var (
 		SmsFallbackMethod:    "GET",
 		DateCreated:          dateCreated.Format(time.RFC1123Z),
 		DateUpdated:          dateUpdated.Format(time.RFC1123Z),
-		Capabilities:         twiliolo.Capabilites{MMS: false, SMS: false, Voice: true},
+		Capabilities:         twiliolo.Capabilities{MMS: false, SMS: false, Voice: true},
 		APIVersion:           twiliolo.VERSION,
 		URI:                  "/2010-04-01/Accounts/TwilioloFake/IncomingPhoneNumbers/TwiliololIncomingFake.json",
 	}
