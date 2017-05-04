@@ -10,6 +10,7 @@ import (
 // AvailablePhoneNumberServiceInterface is the interface of a IncomingPhoneNumberService
 type AvailablePhoneNumberServiceInterface interface {
 	Local(string, ...option.RequestOption) ([]AvailablePhoneNumber, error)
+	Buy(*AvailablePhoneNumber, ...option.RequestOption) (*IncomingPhoneNumber, error)
 }
 
 // AvailablePhoneNumberService handles communication with the Incoming Phone Number related methods.
