@@ -40,7 +40,7 @@ func (o AreaCode) GetValue() (string, string) {
 }
 
 // Contains type for querystring parameter
-type Contains int
+type Contains string
 
 // GetValue returns the query string compliant name and value
 func (o Contains) GetValue() (string, string) {
